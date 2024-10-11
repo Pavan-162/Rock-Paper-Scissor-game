@@ -1,3 +1,4 @@
+My site is live at https://pavan-162.github.io/Rock-Paper-Scissor-game/
 Rock-Paper-Scissors Game
 Overview
 The Rock-Paper-Scissors Game is an interactive web-based game that allows users to play against the computer. The game displays the result after each round and can optionally keep track of the score. It features a minimalist design and smooth animations, making the gameplay experience engaging and user-friendly.
