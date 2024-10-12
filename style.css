@@ -27,7 +27,7 @@ h1 {
 .choice {
   padding: 10px 20px;
   border: none;
-  background-color: #6200ea;
+  background-color: #ea004a;
   color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -35,7 +35,7 @@ h1 {
 }
 
 .choice:hover {
-  background-color: #3700b3;
+  background-color: #27ea00;
 }
 
 .result {
