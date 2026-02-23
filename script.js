@@ -1,4 +1,3 @@
-// script.js
 const app = {
     // 1. Centralized State
     state: {
@@ -23,7 +22,9 @@ const app = {
         phaseResolve: document.getElementById('resolution-phase'),
         boxP1: document.getElementById('reveal-p1'),
         boxP2: document.getElementById('reveal-p2'),
-        btnAction: document.getElementById('btn-action')
+        btnAction: document.getElementById('btn-action'), // Fixed missing comma here
+        turnPopup: document.getElementById('turn-popup'),
+        popupText: document.getElementById('popup-text')
     },
 
     emojis: { rock: '✊', paper: '🖐️', scissors: '✌️' },
@@ -43,6 +44,28 @@ const app = {
         this.startRound();
     },
 
+    showTurnPopup(text, duration = 1500) {
+        this.ui.popupText.textContent = text;
+        this.ui.turnPopup.classList.remove('hidden');
+        
+        // Reset and trigger the pop-in animation
+        this.ui.popupText.classList.remove('pop-out');
+        this.ui.popupText.classList.remove('pop-in');
+        void this.ui.popupText.offsetWidth; // Force DOM reflow to restart animation
+        this.ui.popupText.classList.add('pop-in');
+
+        // Auto-hide after the specified duration
+        setTimeout(() => {
+            this.ui.popupText.classList.remove('pop-in');
+            this.ui.popupText.classList.add('pop-out');
+            
+            // Wait for pop-out animation to finish before hiding container
+            setTimeout(() => {
+                this.ui.turnPopup.classList.add('hidden');
+            }, 400); 
+        }, duration);
+    },
+
     startRound() {
         this.state.p1Choice = null;
         this.state.p2Choice = null;
@@ -59,6 +82,9 @@ const app = {
         this.ui.btnAction.classList.add('hidden');
         
         this.updateStatus("Player 1, make your move.", "var(--text-main)");
+        
+        // Trigger Player 1 Popup
+        this.showTurnPopup("Player 1's Turn");
     },
 
     handleMove(choice) {
@@ -66,12 +92,26 @@ const app = {
             this.state.p1Choice = choice;
             
             if (this.state.mode === 'pve') {
-                const options = ['rock', 'paper', 'scissors'];
-                this.state.p2Choice = options[Math.floor(Math.random() * 3)];
-                this.prepareResolution();
+                // Fake a thinking delay for the computer
+                this.showTurnPopup("Computer is thinking...", 1200);
+                
+                setTimeout(() => {
+                    const options = ['rock', 'paper', 'scissors'];
+                    this.state.p2Choice = options[Math.floor(Math.random() * 3)];
+                    this.prepareResolution();
+                }, 1600); // Wait for popup to clear before moving to resolution
             } else {
+                // Pass and Play Mode
                 this.state.currentPlayer = 2;
-                this.updateStatus("Player 2, your turn (Player 1 look away)", "var(--primary)");
+                this.updateStatus("Player 2, your turn", "var(--primary)");
+                
+                // Hide selection briefly, show popup, then let P2 pick
+                this.ui.phaseSelect.classList.add('hidden');
+                this.showTurnPopup("Pass to Player 2", 1500);
+                
+                setTimeout(() => {
+                    this.ui.phaseSelect.classList.remove('hidden');
+                }, 1900);
             }
         } else {
             this.state.p2Choice = choice;
