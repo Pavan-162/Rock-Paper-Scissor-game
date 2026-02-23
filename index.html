@@ -3,27 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPS | Premium</title>
     <link rel="stylesheet" href="style.css">
-    <title>Rock-Paper-Scissors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container">
-        <h1>Rock-Paper-Scissors</h1>
-        <div class="choices">
-            <button class="choice" id="rock">Rock</button>
-            <button class="choice" id="paper">Paper</button>
-            <button class="choice" id="scissors">Scissors</button>
-        </div>
-        <div class="result">
-            <h2 id="resultText">Make your choice!</h2>
-            <h3 id="cpuChoice"></h3>
-        </div>
-        <div class="score">
-            <h3>Score</h3>
-            <p id="userScore">User: 0</p>
-            <p id="cpuScore">CPU: 0</p>
-        </div>
-    </div>
+    <main class="app-container">
+        
+        <section id="view-menu" class="view active">
+            <div class="brand">
+                <h1>Rock Paper Scissors<span>.</span></h1>
+                <p>Choose your game mode</p>
+            </div>
+            <div class="action-group">
+                <button class="btn-primary" onclick="app.initGame('pve')">
+                    <span class="icon">🤖</span> Vs Computer
+                </button>
+                <button class="btn-secondary" onclick="app.initGame('pvp')">
+                    <span class="icon">👥</span> Vs Player
+                </button>
+            </div>
+        </section>
+
+        <section id="view-game" class="view hidden">
+            <header class="game-header">
+                <button class="btn-icon" onclick="app.returnToMenu()" aria-label="Back">
+                    ← Back
+                </button>
+                <div class="score-board">
+                    <div class="score-badge">
+                        <span class="label">Player 1</span>
+                        <span class="score" id="score-p1">0</span>
+                    </div>
+                    <div class="score-divider">:</div>
+                    <div class="score-badge">
+                        <span class="score" id="score-p2">0</span>
+                        <span class="label" id="label-p2">COM</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="status-banner">
+                <h2 id="turn-status">Player 1, make your move</h2>
+            </div>
+
+            <div class="arena">
+                <div id="selection-phase" class="phase active">
+                    <button class="play-card" onclick="app.handleMove('rock')">
+                        <span class="emoji">✊</span>
+                        <span class="card-title">Rock</span>
+                    </button>
+                    <button class="play-card" onclick="app.handleMove('paper')">
+                        <span class="emoji">🖐️</span>
+                        <span class="card-title">Paper</span>
+                    </button>
+                    <button class="play-card" onclick="app.handleMove('scissors')">
+                        <span class="emoji">✌️</span>
+                        <span class="card-title">Scissors</span>
+                    </button>
+                </div>
+
+                <div id="resolution-phase" class="phase hidden">
+                    <div class="result-card" id="card-p1">
+                        <span class="label">Player 1</span>
+                        <div class="reveal-box" id="reveal-p1">❓</div>
+                    </div>
+                    <div class="vs-badge">VS</div>
+                    <div class="result-card" id="card-p2">
+                        <span class="label" id="reveal-label-p2">Computer</span>
+                        <div class="reveal-box" id="reveal-p2">❓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="btn-action" class="btn-primary hidden" onclick="app.resolveRound()">Reveal Matches</button>
+            </div>
+        </section>
+
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
