@@ -1,4 +1,3 @@
-/* style.css */
 :root {
   --bg-color: #f3f4f6;
   --surface: #ffffff;
@@ -11,8 +10,7 @@
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-sm: 8px;
-  --shadow-soft:
-    0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -52,9 +50,7 @@ body {
   flex-direction: column;
   padding: 2rem;
   opacity: 1;
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .view.hidden {
   opacity: 0;
@@ -292,31 +288,117 @@ button:active {
 }
 
 @keyframes pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-/* --- Responsive --- */
+/* --- Robust Responsive Design (Mobile & Tablets) --- */
 @media (max-width: 600px) {
-  .app-container {
-    border-radius: 0;
-    min-height: 100vh;
-  }
-  .phase {
-    flex-wrap: wrap;
-  }
-  .play-card {
-    width: 100px;
-    height: 130px;
-  }
-  .play-card .emoji {
-    font-size: 2.5rem;
-  }
+    body { padding: 0; }
+    .app-container { 
+        border-radius: 0; 
+        min-height: 100vh; 
+        max-width: 100%;
+        box-shadow: none;
+    }
+    
+    .view { padding: 1.5rem 1rem; }
+    .brand h1 { font-size: 2.5rem; }
+    .status-banner { margin-bottom: 1.5rem; }
+    .status-banner h2 { font-size: 1.1rem; }
+    .game-header { margin-bottom: 1.5rem; }
+    
+    #selection-phase { 
+        flex-wrap: wrap; 
+        gap: 0.75rem; 
+    }
+    .play-card { 
+        width: 30%; 
+        min-width: 90px; 
+        height: 110px; 
+    }
+    .play-card .emoji { font-size: 2.5rem; }
+    .play-card .card-title { font-size: 0.8rem; margin-top: 0.5rem; }
+    
+    #resolution-phase { gap: 0.5rem; }
+    .reveal-box { 
+        width: 100px; 
+        height: 130px; 
+        font-size: 3rem; 
+    }
+    .result-card .label { font-size: 0.75rem; }
+    .vs-badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    
+    .btn-primary, .btn-secondary { padding: 0.8rem 1rem; font-size: 0.95rem; }
+    .game-controls { margin-top: 1rem; }
+}
+
+@media (max-width: 350px) {
+    #selection-phase { flex-direction: column; width: 100%; }
+    .play-card { 
+        width: 100%; 
+        height: 80px; 
+        flex-direction: row; 
+        justify-content: flex-start; 
+        padding-left: 2rem; 
+        gap: 1.5rem;
+    }
+    .play-card .emoji { font-size: 2rem; }
+    .play-card:hover .emoji { transform: none; }
+    
+    #resolution-phase { flex-direction: column; }
+    .vs-badge {  margin: 0.5rem 0; }
+}
+
+/* --- 3D Turn Pop-up Overlay --- */
+.turn-popup {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    perspective: 1000px;
+    transition: opacity 0.3s ease;
+}
+
+.turn-popup.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: white;
+    padding: 1.5rem 3rem;
+    border-radius: var(--radius-md);
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    transform-style: preserve-3d;
+}
+
+.pop-in {
+    animation: popIn3D 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.pop-out {
+    animation: popOut3D 0.4s ease-in forwards;
+}
+
+@keyframes popIn3D {
+    0% { transform: translateZ(-300px) rotateX(45deg) scale(0.5); opacity: 0; }
+    60% { transform: translateZ(50px) rotateX(-10deg) scale(1.1); opacity: 1; }
+    100% { transform: translateZ(0) rotateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes popOut3D {
+    0% { transform: translateZ(0) rotateX(0) scale(1); opacity: 1; }
+    100% { transform: translateZ(200px) rotateX(20deg) scale(1.2); opacity: 0; }
 }
